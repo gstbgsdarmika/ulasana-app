@@ -1,0 +1,32 @@
+{% extends 'navigation.html' %} {% block title %}
+<title>Analisis</title>
+{% endblock %} {% block content %}
+<div
+  class="w-11/12 md:container mx-auto md:w-5/6 flex flex-col items-center justify-center h-screen mt-12"
+>
+  <h1 class="text-[#40444E] text-4xl font-bold mb-5">
+    Hasil Analisis Sentimen
+  </h1>
+  <div class="w-7/12 mb-12">
+    <p class="text-stone-900 text-base font-semibold text-center">
+      Ulasan:
+      <span class="text-zinc-600 text-base font-normal">
+        Aplikasi tokocrypto bagus dan mudah dipakai, saya pemula di dunia
+        crypto, tapi langsung bisa mengerti dengan fitur-fitur dari tokocrypto
+        karna UI simpel dan mudah.
+      </span>
+    </p>
+  </div>
+  <h1
+    class="md:p-2.5 p-1.5 bg-emerald-600 rounded-lg text-white md:text-4xl text-2xl font-extrabold inline-block"
+  >
+    Sentimen : Positif
+  </h1>
+  <a
+    href="{{ url_for('analysis') }}"
+    class="mt-16 px-4 py-3 rounded-lg border border-emerald-600 font-bold text-emerald-600 hover:bg-emerald-600 hover:text-white"
+  >
+    Coba Sekarang
+  </a>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'navigation.html' %} {% block title %}
+<title>Beranda</title>
+{% endblock %} {% block content %}
+<div
+  class="w-11/12 md:container mt-10 mx-auto md:w-5/6 flex items-center justify-center"
+>
+  <div
+    class="grid grid-cols-2 gap-x-10 flex items-center justify-center h-screen"
+  >
+    <div class="col-span-1 me-10">
+      <div class="">
+        <img
+          src="{{ url_for('static', filename='images/mobile.png') }}"
+          alt="Login Image"
+          class="object-cover"
+        />
+      </div>
+    </div>
+    <div class="col-span-1 flex flex-col items-center justify-center h-full">
+      <div class="max-w-[552.47px]">
+        <h1 class="text-[#40444E] text-4xl font-bold mb-4">Aplikasi Ulasana</h1>
+        <p class="text-justify text-base text-stone-600 mb-10">
+          Ulasana, sebuah singkatan dari
+          <span class="text-stone-600 font-bold">"Ulasan Pengguna"</span>
+          adalah aplikasi yang menyediakan platform interaktif untuk berbagi dan
+          menganalisis pengalaman pengguna terhadap berbagai produk dan layanan.
+          Dengan menggunakan teknologi analisis sentimen yang canggih, Ulasana
+          membantu menguraikan dan menyajikan ulasan pengguna dengan cara yang
+          mudah dimengerti.
+        </p>
+        <a
+          href="{{ url_for('analysis') }}"
+          class="w-2/5 text-center px-4 bg-[#0A905D] font-semibold text-white py-2.5 rounded-[10px]"
+        >
+          Coba Sekarang
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'navigation.html' %} {% block title %}
+<title>Riwayat</title>
+{% endblock %} {% block content %}
+<div
+  class="w-11/12 md:container h-screen my-40 mx-auto md:w-5/6 flex flex-col items-center justify-center"
+>
+  <h1 class="text-[#40444E] text-4xl font-bold mb-8">Riwayat Analisis</h1>
+  <div class="">
+    <table class="w-full text-sm text-left rtl:text-right">
+      <thead class="text-white bg-emerald-600">
+        <tr>
+          <th scope="col" class="p-3 border-r border-gray-300 md:min-w-52">
+            Tanggal
+          </th>
+          <th scope="col" class="p-3 border-r border-gray-300 md:min-w-52">
+            Jam
+          </th>
+          <th scope="col" class="p-3 border-r border-gray-300 md:min-w-52">
+            Data
+          </th>
+          <th scope="col" class="p-3 border-r border-gray-300 md:min-w-52">
+            Hasil Analisis
+          </th>
+        </tr>
+      </thead>
+      <tbody
+        class="p-3 text-left border border-b border-gray-700 border-opacity-20"
+      >
+        {% for _ in range(10) %}
+        <tr
+          class="p-3 text-left border border-b border-gray-700 border-opacity-20"
+        >
+          <td class="p-3 text-sm border-r border-gray-300 md:min-w-52">
+            senin, 20 september 2021
+          </td>
+          <td class="p-3 text-sm border-r border-gray-300 md:min-w-52">
+            10:00
+          </td>
+          <td class="p-3 text-sm border-r border-gray-300 md:min-w-52">100</td>
+          <td class="p-3 text-sm border-r border-gray-300 md:min-w-52">
+            10% Negatif, 90% Positif
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endblock %}
+  </div>
+</div>

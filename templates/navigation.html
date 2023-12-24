@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% block title %} {% endblock %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
+      defer
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <header>
+      <nav
+        class="fixed top-0 mx-auto flex w-full items-center justify-between py-4 lg:px-20 bg-white shadow"
+        aria-label="Global"
+        role="navigation"
+      >
+        <a
+          href="{{ url_for('index') }}"
+          class="text-white font-extrabold text-zinc-700 text-3xl"
+          >Aplikasi Ulasana</a
+        >
+
+        <!-- Navigation Links -->
+        <div class="space-x-4 flex items-center justify-center gap-x-10">
+          <a
+            href="{{ url_for('index') }}"
+            class="nav-link {% if active_page == 'index' %}text-emerald-600 text-base font-semibold{% else %}text-neutral-400 text-base{% endif %}"
+            >Beranda</a
+          >
+          <a
+            href="{{ url_for('analysis') }}"
+            class="nav-link {% if active_page == 'analysis' %}text-emerald-600 text-base font-semibold{% else %}text-neutral-400 text-base{% endif %}"
+            >Analisis</a
+          >
+          <a
+            href="{{ url_for('history') }}"
+            class="nav-link {% if active_page == 'history' %}text-emerald-600 text-base font-semibold{% else %}text-neutral-400 text-base{% endif %}"
+            >Riwayat</a
+          >
+          <div
+            @click.away="open = false"
+            class="relative"
+            x-data="{ open: false }"
+          >
+            <button
+              type="button"
+              class="relative flex rounded-full text-sm"
+              id="user-menu-button"
+              aria-expanded="false"
+              aria-haspopup="true"
+              @click="open = !open"
+            >
+              <svg
+                width="24"
+                height="25"
+                viewBox="0 0 24 25"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  id="Vector"
+                  d="M12 0.5C5.376 0.5 0 5.876 0 12.5C0 19.124 5.376 24.5 12 24.5C18.624 24.5 24 19.124 24 12.5C24 5.876 18.624 0.5 12 0.5ZM12 4.1C13.992 4.1 15.6 5.708 15.6 7.7C15.6 9.692 13.992 11.3 12 11.3C10.008 11.3 8.4 9.692 8.4 7.7C8.4 5.708 10.008 4.1 12 4.1ZM12 21.14C9 21.14 6.348 19.604 4.8 17.276C4.836 14.888 9.6 13.58 12 13.58C14.388 13.58 19.164 14.888 19.2 17.276C17.652 19.604 15 21.14 12 21.14Z"
+                  fill="#0A905D"
+                />
+              </svg>
+            </button>
+            <div
+              x-show="open"
+              x-transition:enter="transition ease-out duration-100"
+              x-transition:enter-start="transform opacity-0 scale-95"
+              x-transition:enter-end="transform opacity-100 scale-100"
+              x-transition:leave="transition ease-in duration-75"
+              x-transition:leave-start="transform opacity-100 scale-100"
+              x-transition:leave-end="transform opacity-0 scale-95"
+              class="absolute w-full mt-6"
+            >
+              <a
+                class="bg-white hover:bg-red-300 border border-gray-300 py-3 px-5 rounded-lg shadow-lg text-stone-900 text-base font-semibold text-center"
+                href="{{ url_for('logout') }}"
+              >
+                Keluar
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <div>{% block content %} {% endblock %}</div>
+  </body>
+</html>
