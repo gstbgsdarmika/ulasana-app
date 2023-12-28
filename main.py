@@ -1,16 +1,64 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, request, jsonify, render_template, flash, redirect, session, url_for
+from database import db
+from config import Config
+from service.userService import UserService
+from flask_login import LoginManager, login_user, current_user, logout_user, login_required
+from model.userModel import User
 
 app=Flask(__name__, static_folder='static')
 
-@app.route('/login')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + Config.DB_USER + ':' + Config.DB_PASS + '@' + Config.DB_HOST + ':' + Config.DB_PORT + '/' + Config.DB_NAME
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = Config.SECRET_KEY
+
+db = db.init_app(app)
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    # Handle login form submission
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        user = UserService.login(email, password)
+        if user is None:
+            return render_template('login.html', error='email atau password salah')
+        login_user(user)
+        return redirect(url_for('index'))
     return render_template('login.html') 
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    return render_template('register.html') 
+    if request.method == 'POST':
+        name = request.form['name']
+        password = request.form['password']
+        password_confirm = request.form['password_confirm']
+        email = request.form['email']
+        
+        if password != password_confirm:
+            return render_template('register.html', error='konfirmasi password tidak sesuai')
+        
+        # Instantiate UserService
+        user_service = UserService()
 
-@app.route('/')
+        # Check if email is already registered
+        user = user_service.getUser(email)
+        if user is not None:
+            return render_template('register.html', error='email sudah terdaftar')
+
+        # Create new user
+        user_service.createUser(name, password, email)
+        return redirect(url_for('login'))
+
+    return render_template('register.html')
+
+@app.route('/', methods=['GET'])
+@login_required
 def index():
     active_page = 'index'
     return render_template('index.html', active_page=active_page) 
@@ -36,7 +84,9 @@ def history():
     return render_template('history.html', active_page=active_page) 
 
 @app.route('/logout')
+@login_required
 def logout(): 
+    logout_user()
     return redirect(url_for('login'))
 
 app.run(debug=True)
