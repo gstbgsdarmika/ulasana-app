@@ -26,12 +26,6 @@
           data dalam format CSV.
         </p>
         <div class="flex gap-x-5">
-          <a
-            href="{{ url_for('analysisInputText') }}"
-            class="w-2/5 text-center bg-[#0A905D] font-semibold text-white py-2.5 rounded-[10px]"
-          >
-            Input Teks
-          </a>
           <form
             id="analysisForm"
             class="flex"
@@ -74,4 +68,20 @@
     </div>
   </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("submitBtn").addEventListener("click", function () {
+      Swal.fire({
+        title: "Loading...",
+        allowEscapeKey: false,
+        allowOutsideClick: true,
+        showConfirmButton: false,
+        onOpen: () => {
+          Swal.showLoading();
+        },
+      });
+    });
+  });
+</script>
 {% endblock %}
