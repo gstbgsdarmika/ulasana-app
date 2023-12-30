@@ -34,9 +34,11 @@ def normalize_slang(text):
     return ' '.join([slang_dict_map[word] if word in slang_dict_map else word for word in text.split(' ')])
 
 def preprocess(text):
+    if text is None or not isinstance(text, str):
+        return ""
+
     text1 = text.lower()   # case folding
-    text4 = remove_emojis(text1)
-    text5 = re.sub(r"\d+", "", text4)   # remove numbers
+    text5 = re.sub(r"\d+", "", text1)   # remove numbers
     text6 = text5.replace('\\n',' ')    # hapus karakter '\n'
     text7 = remove_punctuation(text6)
     text8 = normalize_slang(text7)

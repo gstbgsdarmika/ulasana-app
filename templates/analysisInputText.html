@@ -19,7 +19,7 @@
     <div class="col-span-1 flex flex-col items-center justify-center h-full">
       <div class="min-w-[500px] max-w-[579.84px]">
         <h1 class="text-[#40444E] text-4xl font-bold">Tuliskan teks</h1>
-        <form class="w-full mt-5 mb-10">
+        <form class="w-full mt-5" method="post">
           <textarea
             id="document"
             name="document"
@@ -27,13 +27,26 @@
             class="block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-stone-300"
             placeholder="Ketik teks yang ingin dianalisis"
           ></textarea>
+          <button
+            type="submit"
+            class="w-2/5 bg-[#0A905D] mt-10 font-semibold text-white py-2.5 rounded-[10px]"
+          >
+            Analisis
+          </button>
         </form>
-        <button
-          type="submit"
-          class="w-2/5 bg-[#0A905D] font-semibold text-white py-2.5 rounded-[10px]"
-        >
-          Analisis
-        </button>
+        {% if result %}
+        <h2>Analysis Result:</h2>
+        <p><strong>Input Text:</strong> {{ result['input_text'] }}</p>
+        <p>
+          <strong>Preprocessed Text:</strong> {{ result['preprocessed_text'] }}
+        </p>
+        <p>
+          <strong>Predicted Sentiment:</strong> {{ result['predicted_sentiment']
+          }}
+        </p>
+        {% endif %} {% if error_message %}
+        <p style="color: red"><strong>Error:</strong> {{ error_message }}</p>
+        {% endif %}
       </div>
     </div>
   </div>

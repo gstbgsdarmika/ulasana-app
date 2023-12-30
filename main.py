@@ -75,18 +75,24 @@ def index():
     return render_template('index.html', active_page=active_page) 
 
 # Route untuk halaman analisis
-@app.route('/analysis', methods=['GET', 'POST'])
+@app.route('/analysis')
 @login_required
 def analysis():
     active_page = 'analysis'
+    return render_template('analysis.html', active_page=active_page)
 
+# Route untuk halaman analisis dengan input file
+@app.route('/analysis-input-file', methods=['GET', 'POST']) 
+@login_required
+def analysisInputFile():
+    active_page = 'analysis'
     if request.method == 'POST':
         # Periksa apakah 'file' ada dalam request.files
         if 'file' not in request.files:
-            return render_template('analysis.html', error='File tidak ditemukan')
+            return render_template('analysisInputFile.html', error='File tidak ditemukan')
         file = request.files['file']
         if file.filename == '':
-            return render_template('analysis.html', error='File tidak valid')
+            return render_template('analysisInputFile.html', error='File tidak valid')
         try:
             # Baca file CSV menggunakan Pandas
             csv_data = pd.read_csv(file) 
@@ -148,32 +154,81 @@ def analysis():
             return render_template('resultFile.html', active_page=active_page, result=rounded_accuracy)
 
         except pd.errors.EmptyDataError:
-            return render_template('analysis.html', error='Data tidak ditemukan')
+            return render_template('analysisInputFile.html', error='Data tidak ditemukan')
         except pd.errors.ParserError:
-            return render_template('analysis.html', error='Data tidak ditemukan')
+            return render_template('analysisInputFile.html', error='Data tidak ditemukan')
 
-    return render_template('analysis.html', active_page=active_page)
+    return render_template('analysisInputFile.html', active_page=active_page)
 
 # Route untuk halaman analisis dengan input teks
-@app.route('/analysis-text-input') 
+@app.route('/analysis-text-input', methods=['GET', 'POST'])
+@login_required
 def analysisInputText():
     active_page = 'analysis'
-    return render_template('analysisInputText.html', active_page=active_page) 
+    result = None
+    error_message = None
+
+    if request.method == 'POST':
+        # Get the text input from the form
+        input_text = request.form.get('document')
+
+        try:
+            # Load the vocabulary used during training
+            file_path = './model/machine/best_tfidf_vocabulary_SVM.pkl'
+            with open(file_path, 'rb') as file:
+                best_vocabulary_SVM = pickle.load(file)
+
+            # Load the TF-IDF model used during training
+            file_path1 = './model/machine/svm_tfidf_model.pkl'
+            with open(file_path1, 'rb') as file:
+                model_tfidf_SVM = pickle.load(file)
+
+            # Create a new TF-IDF vectorizer with the loaded vocabulary
+            tfidf_vectorizer_svm = TfidfVectorizer(vocabulary=best_vocabulary_SVM)
+
+            # Fit the vectorizer with the loaded vocabulary
+            tfidf_vectorizer_svm.fit_transform([''])
+
+            # Preprocess the input text
+            preprocessed_text = preprocess(input_text)
+
+            # Transform the preprocessed text using the fitted vectorizer
+            X_TFIDF_SVM = tfidf_vectorizer_svm.transform([preprocessed_text]).toarray()
+
+            # Predict sentiment using the model
+            predicted_sentiment = model_tfidf_SVM.predict(X_TFIDF_SVM)[0]
+
+            # Prepare result for display
+            result = {
+                'input_text': input_text,
+                'preprocessed_text': preprocessed_text,
+                'predicted_sentiment': predicted_sentiment
+            }
+
+        except Exception as e:
+            # Handle errors and provide an error message
+            error_message = f"An error occurred: {str(e)}"
+        return render_template('resultInputText.html', active_page=active_page, result=result, error_message=error_message)
+
+    return render_template('analysisInputText.html', active_page=active_page)
 
 # Route untuk halaman hasil analisis dengan file
 @app.route('/result-file') 
+@login_required
 def resultFile():
     active_page = 'analysis'
     return render_template('resultFile.html', active_page=active_page) 
 
 # Route untuk halaman hasil analisis dengan input teks
 @app.route('/result-text-input') 
+@login_required
 def resultInputText():
     active_page = 'analysis'
     return render_template('resultInputText.html', active_page=active_page) 
 
 # Route untuk halaman riwayat
 @app.route('/history')
+@login_required
 def history():
     active_page = 'history'
     return render_template('history.html', active_page=active_page) 
