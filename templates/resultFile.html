@@ -1,0 +1,48 @@
+{% extends 'navigation.html' %} {% block title %}
+<title>Analisis</title>
+{% endblock %} {% block content %}
+<div
+  class="flex flex-col items-center justify-center w-11/12 mx-auto mt-36 md:container md:w-5/6"
+>
+  <h1 class="text-[#40444E] text-4xl font-bold mb-5">
+    Hasil Analisis Sentimen
+  </h1>
+  {% if result %}
+  <div class="flex items-center justify-center">
+    <div class="pr-2">
+      <img
+        src="{{ url_for('static', filename='images/pie_chart.png') }}"
+        alt="warning"
+        width="400"
+      />
+    </div>
+    <div class="pr-2">
+      <img
+        src="{{ url_for('static', filename='images/result.png') }}"
+        alt="warning"
+        width="400"
+      />
+    </div>
+  </div>
+  <div class="w-7/12">
+    <p class="text-zinc-600 text-base font-normal text-center">
+      Dari keterangan diagram di atas, sistem berhasil mencapai akurasi model
+      sebesar
+      <span class="text-emerald-600 text-base font-bold text-center">
+        {{ result }} %</span
+      >
+      Keberhasilan ini diperoleh dari peningkatan parameter model, pemrosesan
+      data , dan penambahan fitur yang relevan.
+    </p>
+  </div>
+  <a
+    href="{{ url_for('analysis') }}"
+    class="my-10 px-4 py-3 rounded-lg border border-emerald-600 font-bold text-emerald-600 hover:bg-emerald-600 hover:text-white"
+  >
+    Coba Lagi
+  </a>
+  {% endif %} {% if error %}
+  <div class="mb-4 text-red-500">{{ error }}</div>
+  {% endif %}
+</div>
+{% endblock %}

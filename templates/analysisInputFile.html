@@ -19,25 +19,42 @@
     <div class="col-span-1 flex flex-col items-center justify-center h-full">
       <div class="max-w-[552.47px]">
         <h1 class="text-[#40444E] text-4xl font-bold mb-2">
-          Pilih Masukan Data
+          Masukan Data File
         </h1>
         <p class="text-justify text-stone-600 mb-10 text-base">
-          Ulasana memungkinkan untuk memasukkan teks langsung atau mengunggah
-          data dalam format CSV.
+          Pastikan file .csv Anda dilengkapi dengan kolom
+          <span class="text-emerald-600 text-base font-semibold">
+            'content'
+          </span>
+          dan
+          <span class="text-emerald-600 text-base font-semibold">
+            'score'
+          </span>
+          untuk memastikan analisis berjalan dengan lancar.
         </p>
-        <div class="flex gap-x-5">
-          <a
-            href="{{ url_for('analysisInputText') }}"
-            class="w-2/5 text-center bg-[#0A905D] font-semibold text-white py-2.5 rounded-[10px]"
+        <div class="flex">
+          <form
+            id="analysisForm"
+            class="flex items-center justify-center gap-x-5"
+            action="/analysis-input-file"
+            method="post"
+            enctype="multipart/form-data"
           >
-            Input Teks
-          </a>
-          <a
-            href="{{ url_for('analysisInputFile') }}"
-            class="w-2/5 text-center bg-[#0A905D] font-semibold text-white py-2.5 rounded-[10px]"
-          >
-            Upload File
-          </a>
+            <input
+              class="w-full py-2.5 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+              type="file"
+              name="file"
+              id="file"
+              accept=".csv"
+            />
+            <button
+              type="submit"
+              id="submitBtn"
+              class="w-2/5 bg-[#0A905D] font-semibold text-white py-2.5 rounded-[10px]"
+            >
+              Submit
+            </button>
+          </form>
         </div>
       </div>
     </div>
